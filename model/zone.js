@@ -5,13 +5,15 @@ define("model/zone",function(require, exports, module) {
     var user=require("model/user");
 	var get=function(){
 		if(!inited){
-				cache=common.cache(exports.id);
+			if(common.cache(module.id)){
+				cache=common.cache(module.id);
+			}	
 				inited=true;
 				};
 	}
 	var set=function(callback){
 		/*把数据推送到数据源*/
-		common.cache(exports.id,cache);
+		common.cache(module.id,cache);
 		if(callback){
 			callback();
 		};

@@ -11,7 +11,6 @@ define("bin/control",function(require, exports, module) {
     window.domAll = $('<div id="domAll"></div>');
     /*页面栈*/
     var pageArry=[];
-    debugger;
     /*跳页方法*/
     function changePage() {
         /*默认首页*/

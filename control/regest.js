@@ -10,10 +10,6 @@ define("control/regest",function(require, exports, module) {
 		function viewDone(){/*主区加载完成*/
 			/*绑定事件*/
 			$(".regest_page #Send").unbind("tap").bind("tap",function(){
-				if(!userLoaded){
-					common.pop.on("数据未同步成功，请稍后再试");
-					return false;
-				}
 				if(!$("#phone input").val()){
 					common.pop.on("请输入手机号");
 					return false;

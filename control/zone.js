@@ -1,7 +1,10 @@
-app.control.set({
-	name:"zone",
-	par:[],
-	fn:function(data){
+define("control/zone",function(require, exports, module) {
+	var page={};
+	module.exports=page;
+	page.par=[];
+	var view=require("bin/view");
+	var control=require("bin/control");
+	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
 			var myScroll = new IScroll('#zoneMain', { probeType: 3 });
@@ -25,7 +28,7 @@ app.control.set({
 				}
 			});
 			$(".head_module .left").unbind("tap").bind("tap",function(){
-				app.control.back();
+				control.back();
 			});
 			$(".zone_page #album").unbind("tap").bind("tap",function(){
 				window.location.hash="album";
@@ -47,11 +50,11 @@ app.control.set({
 
 		}
 		/*头部不放那*/
-		app.view.head.hide(headDone);
+		view.head.hide(headDone);
 		/*隐藏脚部*/
-		app.view.foot.hide(footDone);
+		view.foot.hide(footDone);
 		/*加载主区，传入参数*/
-		app.view.main.sugest("zone_page",{
+		view.main.sugest("zone_page",{
 			bg:"img/zoneBg.jpg",
 			icon:"img/head.jpg",
 			step:["sun","sun","sun","moon","moon","start","start"],

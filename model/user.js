@@ -7,15 +7,17 @@ define("model/user",function(require, exports, module) {
 	var album=require("model/album");
 	var get=function(){
 		if(!inited){
-				cache=common.cache(exports.id);
+			if(common.cache(module.id)){
+				cache=common.cache(module.id);
+			}
 				inited=true;
 				};
 	}
 	var set=function(callback){
 		/*把数据推送到数据源*/
-		common.cache(exports.id,cache);
+		common.cache(module.id,cache);
 		if(callback){
-			callback();
+			callback(true);
 		};
 	}
 	get();
@@ -27,26 +29,28 @@ define("model/user",function(require, exports, module) {
 		function login(name,key,fn){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
+				if(fn){fn(false);}
 				return false;
 			};
 			var result=_.findWhere(cache,{name:name,key:key});
 			if(result){
 				loginMessage=result;
-				fn(true);
+				if(fn){fn(true);}
 			}else{
 				common.pop.on("账号或密码错误");
-				fn(false);
+				if(fn){fn(false);}
 			}
 		};
 		/*注册*/
 		function regest(name,key,fn){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
+				if(fn){fn(false);}
 				return false;
 			};
 			if(_.findWhere(cache,{name:name})){
 				common.pop.on("注册手机已有");
-				fn(false);
+				if(fn){fn(false);}
 			}else{/*写入*/
 				var newId=common.uuid();
 				cache[newId]={
@@ -117,6 +121,7 @@ define("model/user",function(require, exports, module) {
 		function addFriend(from,to,fn){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
+				if(fn){fn(false);}
 				return false;
 			};
 			if(!_.contains(cache[to].friend.reject, from)){

@@ -1,4 +1,4 @@
-define("control/actionList",function(require, exports, module) {
+define("control/group",function(require, exports, module) {
 	var page={};
 	module.exports=page;
 	page.par=[];

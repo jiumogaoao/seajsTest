@@ -65,7 +65,7 @@ define("bin/view",function(require, exports, module) {
 				$("#head").html(headString);
 				/*播动画*/
 				$("#head").attr("style","transform:translate(0px, -100%) translateZ(0px);opacity: 0");
-				$("#main").css("top",$("#head").height()/app.size);
+				$("#main").css("top",$("#head").height()/common.size);
 				$("#head").css({"transition-timing-function": "cubic-bezier(0.1, 0.57, 0.1, 1)", "transition-duration": "1000ms","transform":"translate(0px, 0px) translateZ(0px)","opacity": 1});
 				headDelay=setTimeout(function(){
 				if(callback){
@@ -153,7 +153,7 @@ define("bin/view",function(require, exports, module) {
 				$("#foot").html(headString);
 				/*播动画*/
 				$("#foot").attr("style","transform:translate(0px, 100%) translateZ(0px);opacity: 0");
-				$("#main").css("bottom",$("#foot").height()/app.size);
+				$("#main").css("bottom",$("#foot").height()/common.size);
 				$("#foot").css({"transition-timing-function": "cubic-bezier(0.1, 0.57, 0.1, 1)", "transition-duration": "1000ms","transform":"translate(0px, 0px) translateZ(0px)","opacity": 1});
 				footDelay=setTimeout(function(){
 				if(callback){/*播完告诉它*/
