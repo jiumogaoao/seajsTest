@@ -21,10 +21,12 @@ define("model/user",function(require, exports, module) {
 		};
 	}
 	get();
-	var model={};
-	module.exports=model;
+	
 		/*登录信息*/
 		var loginMessage=null;
+		if(common.cache("loginMessage")){
+			loginMessage=common.cache("loginMessage");
+		}
 		/*登录*/
 		function login(name,key,fn){
 			if(!inited){
@@ -34,7 +36,8 @@ define("model/user",function(require, exports, module) {
 			};
 			var result=_.findWhere(cache,{name:name,key:key});
 			if(result){
-				loginMessage=result;
+				loginMessage=_.pick(result,'id','name','icon','dsc');
+				common.cache("loginMessage",_.pick(result,'id','name','icon','dsc'));
 				if(fn){fn(true);}
 			}else{
 				common.pop.on("账号或密码错误");
@@ -118,15 +121,15 @@ define("model/user",function(require, exports, module) {
 			}
 		};
 		/*添加好友*/
-		function addFriend(from,to,fn){
+		function addFriend(to,fn){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
 				if(fn){fn(false);}
 				return false;
 			};
-			if(!_.contains(cache[to].friend.reject, from)){
-				cache[from].friend.request.push(to);
-				cache[to].friend.response.push(from);
+			if(!_.contains(cache[to].friend.reject, loginMessage.id)){
+				cache[loginMessage.id].friend.request.push({id:to,time:new Date().getTime()});
+				cache[to].friend.response.push({id:loginMessage.id,time:new Date().getTime()});
 				set(fn);
 			}else{
 				if(fn){fn(false);}
@@ -138,9 +141,9 @@ define("model/user",function(require, exports, module) {
 				common.pop.on("数据未同步成功，请稍后再试");
 				return false;
 			};
-			cache[to].friend.reject.push(from);
-			cache[from].friend.request=_.without(cache[from].friend.request,to);
-			cache[to].friend.response=_.without(cache[from].friend.response,from);
+			cache[to].friend.reject.push({id:from,time:new Date().getTime()});
+			cache[from].friend.request=_.reject(cache[from].friend.request,{id:to});
+			cache[to].friend.response=_.reject(cache[from].friend.response,{id:from});
 			set(fn);
 		};
 		/*确认添加好友*/
@@ -149,10 +152,10 @@ define("model/user",function(require, exports, module) {
 				common.pop.on("数据未同步成功，请稍后再试");
 				return false;
 			};
-			cache[from].friend.checked.push(to);
-			cache[to].friend.checked.push(from);
-			cache[from].friend.request=_.without(cache[from].friend.request,to);
-			cache[to].friend.response=_.without(cache[from].friend.response,from);
+			cache[from].friend.checked.push({id:to,time:new Date().getTime()});
+			cache[to].friend.checked.push({id:from,time:new Date().getTime()});
+			cache[from].friend.request=_.reject(cache[from].friend.request,{id:to});
+			cache[to].friend.response=_.reject(cache[from].friend.response,{id:from});
 			set(fn);
 		};
 		/*删除好友*/
@@ -161,9 +164,9 @@ define("model/user",function(require, exports, module) {
 				common.pop.on("数据未同步成功，请稍后再试");
 				return false;
 			};
-			cache[to].friend.reject.push(from);
-			cache[from].friend.checked=_.without(cache[from].friend.checked,to);
-			cache[to].friend.checked=_.without(cache[from].friend.checked,from);
+			cache[to].friend.reject.push({id:from,time:new Date().getTime()});
+			cache[from].friend.checked=_.reject(cache[from].friend.checked,{id:to});
+			cache[to].friend.checked=_.reject(cache[from].friend.checked,{id:from});
 			set(fn);
 		};
 		/*赞*/
@@ -289,6 +292,7 @@ define("model/user",function(require, exports, module) {
 				}
 			});
 		};
+		/*加入组*/
 		function joinGroup(gid,uid,fn,end){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
@@ -303,6 +307,7 @@ define("model/user",function(require, exports, module) {
 				}
 			});
 		};
+		/*退出组*/
 		function outGroup(gid,uid,fn,end){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
@@ -319,6 +324,7 @@ define("model/user",function(require, exports, module) {
 				}
 			});
 		};
+		/*添加管理员*/
 		function addAdminGroup(gid,uid,fn,end){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
@@ -334,6 +340,7 @@ define("model/user",function(require, exports, module) {
 				}
 			});
 		};
+		/*去除管理员*/
 		function cancelAdminGroup(gid,uid,fn,end){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
@@ -349,6 +356,7 @@ define("model/user",function(require, exports, module) {
 				}
 			});
 		};
+		/*创建相册*/
 		function creatAlbum(aid,name,dsc,fn,end){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
@@ -363,6 +371,7 @@ define("model/user",function(require, exports, module) {
 				}
 			});
 		};
+		/*删除相册*/
 		function removeAlbum(aid,fn,end){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
@@ -377,70 +386,119 @@ define("model/user",function(require, exports, module) {
 				}
 			});
 		};
+		/*搜索没添加的人*/
 		function searchNotFriend(fn){
-			
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
+			var returnList=[];
+			var searchList=_.reject(cache, function(point){
+			 return _.contains(point.friend.checked,{id:loginMessage.id})||point.id==loginMessage.id; 
+			});
+			_.each(searchList,function(point){
+				returnList.push(_.pick(point,'id','name','icon','dsc'));
+			});
+			if(fn){fn(returnList);}
 		}
-		model.loginMessage=function(){
+		/*返回好友列表*/
+		function getFriendList(fn){
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
+			var returnObj={
+				checked:[],
+				request:[],
+				response:[],
+				reject:[]
+			};
+			_.each(cache[loginMessage.id].friend.checked,function(point){
+				var addObj=_.pick(cache[point.id],'id','name','icon','dsc');
+				addObj.time=point.time;
+				returnObj.checked.push(addObj);
+			});
+			_.each(cache[loginMessage.id].friend.request,function(point){
+				var addObj=_.pick(cache[point.id],'id','name','icon','dsc');
+				addObj.time=point.time;
+				returnObj.request.push(addObj);
+			});
+			_.each(cache[loginMessage.id].friend.response,function(point){
+				var addObj=_.pick(cache[point.id],'id','name','icon','dsc');
+				addObj.time=point.time;
+				returnObj.response.push(addObj);
+			});
+			_.each(cache[loginMessage.id].friend.reject,function(point){
+				var addObj=_.pick(cache[point.id],'id','name','icon','dsc');
+				addObj.time=point.time;
+				returnObj.reject.push(addObj);
+			});
+			fn(returnObj);
+		}
+		module.exports.loginMessage=function(){
 			return loginMessage;
 		}
-		model.login=function(name,key,fn){
+		module.exports.login=function(name,key,fn){
 			login(name,key,fn);
 		};
-		model.regest=function(name,key,fn){
+		module.exports.regest=function(name,key,fn){
 			regest(name,key,fn);
 		};
-		model.addFriend=function(from,to,fn){
-			addFriend(from,to,fn);
+		module.exports.addFriend=function(to,fn){
+			addFriend(to,fn);
 		};
-		model.rejectFriend=function(from,to,fn){
+		module.exports.rejectFriend=function(from,to,fn){
 			rejectFriend(from,to,fn)
 		};
-		model.checkFriend=function(from,to,fn){
+		module.exports.checkFriend=function(from,to,fn){
 			checkFriend(from,to,fn);
 		};
-		model.removeFriend=function(from,to,fn){
+		module.exports.removeFriend=function(from,to,fn){
 			removeFriend(from,to,fn);
 		};
-		model.praise=function(zid,id,fn,end){
+		module.exports.praise=function(zid,id,fn,end){
 			praise(zid,id,fn,end);
 		};
-		model.cancelPraise=function(zid,id,fn,end){
+		module.exports.cancelPraise=function(zid,id,fn,end){
 			cancelPraise(zid,id,fn,end);
 		};
-		model.attention=function(zid,id,fn,end){
+		module.exports.attention=function(zid,id,fn,end){
 			attention(zid,id,fn,end);
 		};
-		model.cancelAttention=function(zid,id,fn,end){
+		module.exports.cancelAttention=function(zid,id,fn,end){
 			cancelAttention(zid,id,fn,end);
 		};
-		model.readed=function(zid,id,fn,end){
+		module.exports.readed=function(zid,id,fn,end){
 			readed(zid,id,fn,end);
 		};
-		model.share=function(zid,id,fn,end){
+		module.exports.share=function(zid,id,fn,end){
 			share(zid,id,fn,end);
 		};
-		model.reply=function(zid,id,to,text,fn,end){
+		module.exports.reply=function(zid,id,to,text,fn,end){
 			reply(zid,id,to,text,fn,end);
 		};
-		model.creatGroup=function(gid,name,fn,end){
+		module.exports.creatGroup=function(gid,name,fn,end){
 			creatGroup(gid,name,fn,end);
 		};
-		model.joinGroup=function(gid,uid,fn,end){
+		module.exports.joinGroup=function(gid,uid,fn,end){
 			joinGroup(gid,uid,fn,end);
 		};
-		model.outGroup=function(gid,uid,fn,end){
+		module.exports.outGroup=function(gid,uid,fn,end){
 			outGroup(gid,uid,fn,end);
 		};
-		model.addAdminGroup=function(gid,uid,fn,end){
+		module.exports.addAdminGroup=function(gid,uid,fn,end){
 			addAdminGroup(gid,uid,fn,end);
 		};
-		model.cancelAdminGroup=function(gid,uid,fn,end){
+		module.exports.cancelAdminGroup=function(gid,uid,fn,end){
 			cancelAdminGroup(gid,uid,fn,end);
 		};
-		model.removeAlbum=function(aid,fn,end){
+		module.exports.removeAlbum=function(aid,fn,end){
 			removeAlbum(aid,fn,end);
 		};
-		model.searchNotFriend=function(fn){
+		module.exports.searchNotFriend=function(fn){
 			searchNotFriend(fn);
+		};
+		module.exports.getFriendList=function(fn){
+			getFriendList(fn);
 		};
 });

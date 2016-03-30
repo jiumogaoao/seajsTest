@@ -4,7 +4,7 @@
 		<div id="newFriendRoll">
 		<% if(data.list&&data.list.length){
 			_.each(data.list,function(point){ %>
-						<div class="list_module listL_module">
+						<div class="list_module listL_module" pid="<%= point.id %>">
 							<img class="left" src="<%= point.icon %>"/>
 							<div class="right">
 								<div class="title"><%= point.name %></div>
@@ -16,8 +16,6 @@
 						</div>
 		<%	})
 		} %>
-			
-		}
 
 		</div>
 	</div>

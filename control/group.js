@@ -45,6 +45,13 @@ define("control/group",function(require, exports, module) {
 			$(".head_module .left").unbind("tap").bind("tap",function(){
 				control.back();
 			});
+			/*点击添加按钮*/
+			$(".head_module #add").unbind("tap").bind("tap",function(){
+				view.head.listShow();
+			});
+			$(".head_module #creatGroup").unbind("tap").bind("tap",function(){
+				window.location.hash="addGroupName";
+			});
 		}
 		function footDone(){/*脚部加载完成*/
 
@@ -62,10 +69,10 @@ define("control/group",function(require, exports, module) {
 			"right":{
 				type:"icon",
 				icon:[
-				{name:"list"}
+				{name:"list",id:"add"}
 				],
 				list:[
-					{"icon":"group","text":"创建群"},
+					{"icon":"group","text":"创建群",id:"creatGroup"},
 					{"icon":"findGroup","text":"查找群"},
 					{"icon":"groupSet","text":"群消息设置"},
 					{"icon":"creatTalkGroup","text":"创建讨论组"}

@@ -38,6 +38,7 @@ define("bin/control",function(require, exports, module) {
         function runRoute() {
             /*关掉loaging*/
             common.loading.off();
+            common.pop.off();
             /*初始给control的数据*/
             var dataObj = {
                 /*跳转状态*/

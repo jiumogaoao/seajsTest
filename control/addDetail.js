@@ -1,9 +1,11 @@
 define("control/addDetail",function(require, exports, module) {
 	var page={};
 	module.exports=page;
-	page.par=[];
+	page.par=["id"];
+	var common=require("bin/common");
 	var view=require("bin/view");
 	var control=require("bin/control");
+	var user=require("model/user");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
@@ -38,7 +40,11 @@ define("control/addDetail",function(require, exports, module) {
 			 
 		}
 		function footDone(){/*脚部加载完成*/
-
+			$(".myDetail_foot #Send").unbind("tap").bind("tap",function(){
+				user.addFriend(data.par.id,function(){
+					common.pop.on("请求已发送，请等待验证");
+				})
+			});
 		}
 		/*头部不放那*/
 		view.head.hide(headDone);

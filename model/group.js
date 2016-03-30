@@ -19,8 +19,6 @@ define("model/group",function(require, exports, module) {
 		};
 	}
 	get();
-	var model={};
-	module.exports=model;
 	/*创建组*/
 		function add(gid,name,fn,end){
 			if(!gid&&!end){
@@ -31,6 +29,7 @@ define("model/group",function(require, exports, module) {
 				id:gid,
 				name:name,
 				dsc:"",
+				icon:"",
 				type:0,
 				file:[],
 				album:[],
@@ -92,19 +91,33 @@ define("model/group",function(require, exports, module) {
 				}
 			});
 		};
-		model.add=function(gid,name,fn,end){
+		function searchNotGroup(fn){
+			var self=user.loginMessage();
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
+			var returnList=_.reject(cache, function(point){
+			 return _.contains(point.member,{id:self.id}); 
+			});
+			if(fn){fn(returnList);}
+		}
+		module.exports.add=function(gid,name,fn,end){
 			add(gid,name,fn,end);
 		};
-		model.join=function(gid,uid,fn,end){
+		module.exports.join=function(gid,uid,fn,end){
 			join(gid,uid,fn,end);
 		};
-		model.out=function(gid,uid,fn,end){
+		module.exports.out=function(gid,uid,fn,end){
 			out(gid,uid,fn,end);
 		};
-		model.addAdmin=function(gid,uid,fn,end){
+		module.exports.addAdmin=function(gid,uid,fn,end){
 			addAdmin(gid,uid,fn,end);
 		};
-		model.cancelAdmin=function(gid,uid,fn,end){
+		module.exports.cancelAdmin=function(gid,uid,fn,end){
 			cancelAdmin(gid,uid,fn,end);
 		};
+		module.exports.searchNotGroup=function(fn){
+			searchNotGroup(fn);
+		}
 });

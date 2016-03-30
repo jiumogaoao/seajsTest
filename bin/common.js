@@ -57,6 +57,14 @@ define("bin/common",function(require, exports, module) {
             $("#popBg").hide();
         }
     };
+    /*图片转码*/
+    common.pic=function(file,fn) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                fn(e.target.result);
+            };
+            reader.readAsDataURL(file.target.files[0]);
+        }
     /*本机缓存*/
     common.cache = function (key, value, remove) {
         if(!window.localStorage){
