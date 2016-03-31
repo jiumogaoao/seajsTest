@@ -49,7 +49,7 @@ define("control/addDetail",function(require, exports, module) {
 		/*头部不放那*/
 		view.head.hide(headDone);
 		/*加载脚部，传入参数*/
-		view.foot.show("addDetail_foot",{},footDone);
+		view.foot.show("addDetail_foot",{text:"加好友"},footDone);
 		/*加载主区，传入参数*/
 		view.main.sugest("addDetail_page",{
 			bg:"img/myDetailBg.jpg",
