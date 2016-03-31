@@ -33,3 +33,11 @@
     height: 88px;
     opacity: 0;
 }
+.addGroupIcon_page #icon{
+	width: 195px;
+    height: 195px;
+    border-radius: 190px;
+    position: absolute;
+    top: 97px;
+    left: 277px;
+}

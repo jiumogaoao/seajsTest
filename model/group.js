@@ -20,7 +20,7 @@ define("model/group",function(require, exports, module) {
 	}
 	get();
 	/*创建组*/
-		function add(gid,name,fn,end){
+		function add(gid,name,icon,fn,end){
 			if(!gid&&!end){
 				gid=common.uuid();
 			}
@@ -29,7 +29,7 @@ define("model/group",function(require, exports, module) {
 				id:gid,
 				name:name,
 				dsc:"",
-				icon:"",
+				icon:icon,
 				type:0,
 				file:[],
 				album:[],
@@ -43,9 +43,9 @@ define("model/group",function(require, exports, module) {
 			};
 			set(function(){
 				if(end){
-					if(fn){fn(true);}
+					if(fn){fn(gid);}
 				}else{
-					user.creatGroup(gid,name,fn,true);	
+					user.creatGroup(gid,name,icon,fn,true);	
 				}
 			});
 		};
@@ -98,12 +98,33 @@ define("model/group",function(require, exports, module) {
 				return false;
 			};
 			var returnList=_.reject(cache, function(point){
-			 return _.contains(point.member,{id:self.id}); 
+			 return _.some(point.member,{id:self.id}); 
 			});
 			if(fn){fn(returnList);}
 		}
-		module.exports.add=function(gid,name,fn,end){
-			add(gid,name,fn,end);
+		function getList(idArry,fn){
+			var returnObj={};
+			_.each(idArry,function(point){
+				returnObj[point]=_.pick(cache[point],"id","name","dsc","type","icon");
+			});
+			fn(returnObj);
+		}
+		function getMyList(fn){
+			var self=user.loginMessage();
+			var list=_.filter(cache,function(point){
+				return _.some(point.member,{id:self.id});
+			});
+			var returnObj=[];
+			_.each(list,function(point){
+				returnObj.push(_.pick(point,"id","name","dsc","type","icon","member"));
+			});
+			returnObj=_.groupBy(returnObj,function(point){
+				return _.findWhere(point.member,{id:self.id}).type;
+			});
+			fn(returnObj);
+		}
+		module.exports.add=function(gid,name,icon,fn,end){
+			add(gid,name,icon,fn,end);
 		};
 		module.exports.join=function(gid,uid,fn,end){
 			join(gid,uid,fn,end);
@@ -119,5 +140,11 @@ define("model/group",function(require, exports, module) {
 		};
 		module.exports.searchNotGroup=function(fn){
 			searchNotGroup(fn);
+		}
+		module.exports.getList=function(idArry,fn){
+			getList(idArry,fn);
+		}
+		module.exports.getMyList=function(fn){
+			getMyList(fn);
 		}
 });

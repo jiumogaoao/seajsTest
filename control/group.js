@@ -4,6 +4,7 @@ define("control/group",function(require, exports, module) {
 	page.par=[];
 	var view=require("bin/view");
 	var control=require("bin/control");
+	var group=require("model/group");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
@@ -82,32 +83,33 @@ define("control/group",function(require, exports, module) {
 		/*隐藏脚部*/
 		view.foot.hide(footDone);
 		/*加载主区，传入参数*/
-		view.main.sugest("group_page",{
-			mine:[{
-				title:"我创建的群组",
-				list:[
-				{icon:"img/head.jpg",name:"某个群组"},
-				{icon:"img/head.jpg",name:"某个群组"}
-				]
-			},
-			{
-				title:"我管理的群组",
-				list:[
-				{icon:"img/head.jpg",name:"某个群组"},
-				{icon:"img/head.jpg",name:"某个群组"}
-				]
-			},
-			{
-				title:"我加入的群组",
-				list:[
-				{icon:"img/head.jpg",name:"某个群组"},
-				{icon:"img/head.jpg",name:"某个群组"}
-				]
-			}
-			],
+		var list={
+			mine:[],
 			talk:[
 			{"icon":"img/head.jpg","name":"某个讨论组"},{"icon":"img/head.jpg","name":"某个讨论组"}
 			]
-		},data.state,"side",viewDone);
+		}
+		function getMyList(returneData){
+			if(returneData.owner&&returneData.owner.length){
+				list.mine.push({
+					title:"我创建的群组",
+					list:returneData.owner
+				})
+			}
+			if(returneData.admin&&returneData.admin.length){
+				list.mine.push({
+					title:"我管理的群组",
+					list:returneData.admin
+				})
+			}
+			if(returneData.member&&returneData.member.length){
+				list.mine.push({
+					title:"我加入的群组",
+					list:returneData.member
+				})
+			}
+		}
+		group.getMyList(getMyList);
+		view.main.sugest("group_page",list,data.state,"side",viewDone);
 	}
 });

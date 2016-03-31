@@ -275,7 +275,7 @@ define("model/user",function(require, exports, module) {
 			});
 		};
 		/*创建组*/
-		function creatGroup(gid,name,fn,end){
+		function creatGroup(gid,name,icon,fn,end){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
 				return false;
@@ -286,9 +286,9 @@ define("model/user",function(require, exports, module) {
 			cache[loginMessage.id].group.creat.push(gid);
 			set(function(){
 				if(end){
-					if(fn){fn(true);}
+					if(fn){fn(gid);}
 				}else{
-					group.add(gid,name,fn,true);
+					group.add(gid,name,icon,fn,true);
 				}
 			});
 		};
@@ -477,8 +477,8 @@ define("model/user",function(require, exports, module) {
 		module.exports.reply=function(zid,id,to,text,fn,end){
 			reply(zid,id,to,text,fn,end);
 		};
-		module.exports.creatGroup=function(gid,name,fn,end){
-			creatGroup(gid,name,fn,end);
+		module.exports.creatGroup=function(gid,name,icon,fn,end){
+			creatGroup(gid,name,icon,fn,end);
 		};
 		module.exports.joinGroup=function(gid,uid,fn,end){
 			joinGroup(gid,uid,fn,end);

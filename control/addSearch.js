@@ -15,6 +15,9 @@ define("control/addSearch",function(require, exports, module) {
 				myScroll.refresh();
 			});
 			$(".addSearch_page .list_module").unbind("tap").bind("tap",function(){
+				if($(this).attr("type")==="0"){
+					window.location.hash="addGroupDetail/"+$(this).attr("pid");
+				}
 				if($(this).attr("type")==="1"){
 					window.location.hash="addDetail/"+$(this).attr("pid");
 				}

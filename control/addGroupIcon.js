@@ -5,6 +5,7 @@ define("control/addGroupIcon",function(require, exports, module) {
 	var view=require("bin/view");
 	var control=require("bin/control");
 	var common=require("bin/common");
+	var group=require("model/group");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
@@ -15,7 +16,7 @@ define("control/addGroupIcon",function(require, exports, module) {
 			});
 			$(".addGroupIcon_page #pic").unbind("change").bind("change",function(e){
 				common.pic(e,function(url){
-					debugger;
+					$(".addGroupIcon_page #icon").attr("src",url);
 				});
 			});
 		}
@@ -25,11 +26,11 @@ define("control/addGroupIcon",function(require, exports, module) {
 				control.back();
 			});
 			$(".head_module #next").unbind("tap").bind("tap",function(){
-				if(!$(".fullScreanInput_module input").val()){
-					common.pop.on("请填写群名字");
-					return false;
-				}
-				window.location.hash="addGroupIcon/"+$(".fullScreanInput_module input").val();
+				group.add(null,data.par.name,$(".addGroupIcon_page #icon").attr("src"),function(id){
+					if(id){
+						window.location.hash="creatGroup/"+id;
+					}
+				});
 			});
 		}
 		function footDone(){/*脚部加载完成*/
