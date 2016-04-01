@@ -4,6 +4,7 @@ define("control/newFriend",function(require, exports, module) {
 	page.par=[];
 	var view=require("bin/view");
 	var control=require("bin/control");
+	var common=require("bin/common");
 	var user=require("model/user");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
@@ -12,6 +13,15 @@ define("control/newFriend",function(require, exports, module) {
 			/*每当图片加载完成，刷新滚动控件*/
 			$('img').on("load",function(){
 				myScroll.refresh();
+			});
+			$(".newFriend_page .addButton").unbind("tap").bind("tap",function(){
+				var that=this;
+				user.checkFriend($(this).attr("pid"),function(){
+					common.pop.on("添加成功，你们已经成为朋友");
+					$(that).parents(".list_module").removeClass('attention');
+					$(that).parents(".list_module .right").append('<div class="state">已添加</div>');
+					$(that).remove();
+				});
 			});
 		}
 		function headDone(){/*头部加载完成*/
@@ -28,7 +38,7 @@ define("control/newFriend",function(require, exports, module) {
 		/*隐藏脚部*/
 		view.foot.hide(footDone);
 		var friendList=[];
-		function getFriend(friend){debugger;
+		function getFriend(friend){
 			_.each(friend.checked,function(point){
 				point.state="已添加";
 				friendList.push(point);

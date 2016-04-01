@@ -3,6 +3,9 @@
 	height: 132px;
 	background-color: #fff;
 }
+.list_module.attention{
+	background-color: #fcf2c6;
+}
 .list_module .left{
 	width: 100px;
 	height: 100px;
@@ -185,6 +188,20 @@
 	position: absolute;
 	top:68px;
 	left: 0px;
+}
+.list_module.listL_module .right .addButton{
+	width: 130px;
+	height: 60px;
+	background-color: #fff;
+	text-align: center;
+	border-radius: 10px;
+	border:1px solid #cbcdcd;
+	color: #00a5e0;
+	font-size: 28px;
+	line-height: 58px;
+	position: absolute;
+	top:40px;
+	left: 453px;
 }
 .list_module.listL_module .right .state{
 	position: absolute;

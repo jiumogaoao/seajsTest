@@ -4,6 +4,7 @@ define("control/linkmanList",function(require, exports, module) {
 	page.par=[];
 	var view=require("bin/view");
 	var control=require("bin/control");
+	var user=require("model/user");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
@@ -76,27 +77,38 @@ define("control/linkmanList",function(require, exports, module) {
 		/*使用treeNav_foot作为脚部，传入参数*/
 		view.foot.show("treeNav_foot",{hl:"1"},footDone);
 		/*转出linkmanList_page的view*/
-		view.main.sugest("linkmanList_page",{group:[
-		{list:[
-		{name:"我的设备",num:"2/2",list:[
-		{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"},
-		{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"}
-		]},
-		{name:"手机通讯录",num:"2/2",list:[
-		{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"},
-		{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"}
-		]}
-		]},
-		{list:[
-		{name:"我的好友",num:"2/2",list:[
-		{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"},
-		{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"}
-		]},
-		{name:"某个分组",num:"2/2",list:[
-		{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"},
-		{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"}
-		]}
-		]}
-		]},data.state,"size",viewDone);
+		var showData={
+			group:[
+			{list:[
+				{name:"我的设备",num:"2/2",list:[
+					{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"},
+					{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"}
+				]},
+				{name:"手机通讯录",num:"2/2",list:[
+					{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"},
+					{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"}
+				]}
+			]}
+			]
+		}
+		function getFriendList(returnData){
+			var checkedFriend=_.groupBy(returnData.checked,"groupId");
+			var showList={
+				list:[]
+			};
+			_.each(returnData.friendGroup,function(listGroup){
+				var list={
+					name:listGroup.name,num:0,list:[]
+				}
+				if(checkedFriend[listGroup.id]){
+					list.num=checkedFriend[listGroup.id].length;
+					list.list=checkedFriend[listGroup.id];
+				}
+				showList.list.push(list);
+			});
+			showData.group.push(showList);
+		};
+		user.getFriendList(getFriendList);
+		view.main.sugest("linkmanList_page",showData,data.state,"size",viewDone);
 	}
 });

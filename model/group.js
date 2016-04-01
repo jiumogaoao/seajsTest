@@ -21,6 +21,10 @@ define("model/group",function(require, exports, module) {
 	get();
 	/*创建组*/
 		function add(gid,name,icon,fn,end){
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
 			if(!gid&&!end){
 				gid=common.uuid();
 			}
@@ -50,7 +54,14 @@ define("model/group",function(require, exports, module) {
 			});
 		};
 		function join(gid,uid,fn,end){
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
 			var self=user.loginMessage();
+			if(!uid){
+				uid=self.id
+			}
 			cache[gid].member.push({id:uid,nickName:"",type:"owner"});
 			set(function(){
 				if(end){
@@ -61,6 +72,10 @@ define("model/group",function(require, exports, module) {
 			});
 		};
 		function out(gid,uid,fn,end){
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
 			var self=user.loginMessage();
 			cache[gid].member=_.reject(cache[gid].member,{id:uid});
 			set(function(){
@@ -72,6 +87,10 @@ define("model/group",function(require, exports, module) {
 			});
 		};
 		function addAdmin(gid,uid,fn,end){
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
 			_.findWhere(cache[gid].member,{id:uid}).type="admin";
 			set(function(){
 				if(end){
@@ -82,6 +101,10 @@ define("model/group",function(require, exports, module) {
 			});
 		};
 		function cancelAdmin(gid,uid,fn,end){
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
 			_.findWhere(cache[gid].member,{id:uid}).type="member";
 			set(function(){
 				if(end){
@@ -103,6 +126,10 @@ define("model/group",function(require, exports, module) {
 			if(fn){fn(returnList);}
 		}
 		function getList(idArry,fn){
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
 			var returnObj={};
 			_.each(idArry,function(point){
 				returnObj[point]=_.pick(cache[point],"id","name","dsc","type","icon");
@@ -110,6 +137,10 @@ define("model/group",function(require, exports, module) {
 			fn(returnObj);
 		}
 		function getMyList(fn){
+			if(!inited){
+				common.pop.on("数据未同步成功，请稍后再试");
+				return false;
+			};
 			var self=user.loginMessage();
 			var list=_.filter(cache,function(point){
 				return _.some(point.member,{id:self.id});

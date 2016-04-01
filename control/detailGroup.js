@@ -1,4 +1,4 @@
-define("control/detail",function(require, exports, module) {
+define("control/detailGroup",function(require, exports, module) {
 	var page={};
 	module.exports=page;
 	page.par=["id"];
@@ -23,7 +23,7 @@ define("control/detail",function(require, exports, module) {
 
 		}
 		/*加载头部，传入参数*/
-		view.head.show("head_template",{"left":{type:"back",text:"返回"},"center":{type:"title",text:"某人"},"right":{type:"icon",icon:[{name:"people"},{name:"phone"}]}},headDone);
+		view.head.show("head_template",{"left":{type:"back",text:"返回"},"center":{type:"title",text:"某群"},"right":{type:"icon",icon:[{name:"group"},{name:"detail"}]}},headDone);
 		/*加载脚部，传入参数*/
 		view.foot.show("talk_foot",{hl:"1"},footDone);
 		/*加载主区，传入参数*/

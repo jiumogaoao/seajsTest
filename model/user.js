@@ -115,6 +115,9 @@ define("model/user",function(require, exports, module) {
 						request:[],
 						response:[],
 						reject:[]
+					},
+					friendGroup:{
+						"all":{id:"all",name:"我的好友"}
 					}
 				};
 				set(fn);
@@ -147,15 +150,15 @@ define("model/user",function(require, exports, module) {
 			set(fn);
 		};
 		/*确认添加好友*/
-		function checkFriend(from,to,fn){
+		function checkFriend(to,fn){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
 				return false;
 			};
-			cache[from].friend.checked.push({id:to,time:new Date().getTime()});
-			cache[to].friend.checked.push({id:from,time:new Date().getTime()});
-			cache[from].friend.request=_.reject(cache[from].friend.request,{id:to});
-			cache[to].friend.response=_.reject(cache[from].friend.response,{id:from});
+			cache[loginMessage.id].friend.checked.push({id:to,time:new Date().getTime(),groupId:"all"});
+			cache[to].friend.checked.push({id:loginMessage.id,time:new Date().getTime(),groupId:"all"});
+			cache[to].friend.request=_.reject(cache[to].friend.request,{id:loginMessage.id});
+			cache[loginMessage.id].friend.response=_.reject(cache[loginMessage.id].friend.response,{id:to});
 			set(fn);
 		};
 		/*删除好友*/
@@ -298,6 +301,9 @@ define("model/user",function(require, exports, module) {
 				common.pop.on("数据未同步成功，请稍后再试");
 				return false;
 			};
+			if(!uid){
+				uid=loginMessage.id;
+			}
 			cache[uid].group.member.push(gid);
 			set(function(){
 				if(end){
@@ -411,11 +417,13 @@ define("model/user",function(require, exports, module) {
 				checked:[],
 				request:[],
 				response:[],
-				reject:[]
+				reject:[],
+				friendGroup:cache[loginMessage.id].friendGroup
 			};
 			_.each(cache[loginMessage.id].friend.checked,function(point){
 				var addObj=_.pick(cache[point.id],'id','name','icon','dsc');
 				addObj.time=point.time;
+				addObj.groupId=point.groupId;
 				returnObj.checked.push(addObj);
 			});
 			_.each(cache[loginMessage.id].friend.request,function(point){
@@ -450,8 +458,8 @@ define("model/user",function(require, exports, module) {
 		module.exports.rejectFriend=function(from,to,fn){
 			rejectFriend(from,to,fn)
 		};
-		module.exports.checkFriend=function(from,to,fn){
-			checkFriend(from,to,fn);
+		module.exports.checkFriend=function(to,fn){
+			checkFriend(to,fn);
 		};
 		module.exports.removeFriend=function(from,to,fn){
 			removeFriend(from,to,fn);
