@@ -26,10 +26,10 @@
 		<div id="listFrameRoll">
 			<% if(data.group&&data.group.length){
 				_.each(data.group,function(dropdown){ %>
-					<div class="dropDown_module">
+					<div class="dropDown_module" gid="<%= dropdown.id %>">
 					<% if(dropdown.list&&dropdown.list.length){
 						_.each(dropdown.list,function(list){ %>
-							<div class="dropDownPoint">
+							<div class="dropDownPoint" lid="<%= list.id %>">
 								<div class="dropDownHead">
 									<div class="dropIcon"></div>
 									<div class="dropName"><%= list.name %></div>
@@ -38,7 +38,7 @@
 								<div class="dropDownMain">
 								<% if(list.list&&list.list.length){
 									_.each(list.list,function(point){ %>
-										<div class="list_module listM_module">
+										<div class="list_module listM_module" pid="<%= point.id %>">
 											<img class="left" src="<%= point.icon %>"/>
 											<div class="right">
 												<div class="title"><%= point.name %></div>

@@ -16,7 +16,7 @@
 									<div class="text_module listTitle textGay_module"><%= group.title %></div>
 									<% if(group.list&&group.list.length){
 										_.each(group.list,function(point){ %>
-											<div class="list_module listM_module listSingle_module">
+											<div class="list_module listM_module listSingle_module" gid="<%= point.id %>">
 												<img class="left" src="<%= point.icon %>"/>
 												<div class="right">
 													<div class="title"><%= point.name %></div>
@@ -33,7 +33,7 @@
 							<div class="subRoll">
 								<% if(data.talk&&data.talk.length){
 									_.each(data.talk,function(point){ %>
-										<div class="list_module listM_module listSingle_module">
+										<div class="list_module listM_module listSingle_module" gid="<%= point.id %>">
 											<img class="left" src="<%= point.icon %>"/>
 											<div class="right">
 												<div class="title"><%= point.name %></div>

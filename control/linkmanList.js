@@ -20,8 +20,8 @@ define("control/linkmanList",function(require, exports, module) {
 				myScroll.refresh();
 			});
 			/*点击列表项*/
-			$(".linkmanList_page .list_module .right").unbind("tap").bind("tap",function(){
-				window.location.hash="detail";
+			$(".linkmanList_page [gid='friend'] .list_module").unbind("tap").bind("tap",function(){
+				window.location.hash="detail/"+$(this).attr("pid");
 			});
 			/*左边向右划*/
 			$(".linkmanList_page #sideHandle").unbind("swiperight").bind("swiperight",function(){
@@ -83,22 +83,23 @@ define("control/linkmanList",function(require, exports, module) {
 				{name:"我的设备",num:"2/2",list:[
 					{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"},
 					{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"}
-				]},
+				],id:"myDevice"},
 				{name:"手机通讯录",num:"2/2",list:[
 					{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"},
 					{"icon":"img/head.jpg","name":"某人的手机","dsc":"就是个描述","state":"2G"}
-				]}
-			]}
+				],id:"myPhoneList"}
+			],id:"device"}
 			]
 		}
 		function getFriendList(returnData){
 			var checkedFriend=_.groupBy(returnData.checked,"groupId");
 			var showList={
-				list:[]
+				list:[],
+				id:"friend"
 			};
 			_.each(returnData.friendGroup,function(listGroup){
 				var list={
-					name:listGroup.name,num:0,list:[]
+					name:listGroup.name,num:0,list:[],id:listGroup.id
 				}
 				if(checkedFriend[listGroup.id]){
 					list.num=checkedFriend[listGroup.id].length;

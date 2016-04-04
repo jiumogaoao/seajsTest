@@ -109,6 +109,18 @@
 .head_module .rightIcon.add{
 	background-position: 0px -405px;
 }
+.head_module .rightIcon.people{
+	background-position: 0px -291px;
+}
+.head_module .rightIcon.phone{
+	background-position: 0px -464px;
+}
+.head_module .rightIcon.group{
+	background-position: 0px -176px;
+}
+.head_module .rightIcon.detail{
+	background-position: 0px -233px;
+}
 .head_module .rightButton{
 	font-size: 32px;
 	color: #fff;

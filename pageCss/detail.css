@@ -51,6 +51,9 @@
 	top: 64px;
     left: 111px;
 }
+.detail_page .deg.deg0{
+	top:28px;
+}
 .detail_page .messagePointR .head{
 	float: right;
 	margin-left: 0px;

@@ -40,6 +40,10 @@ define("control/group",function(require, exports, module) {
 					$(".group_page #groupRoll").css({"transition-timing-function": "cubic-bezier(0.1, 0.57, 0.1, 1)", "transition-duration": "1000ms","transform":"translate(-"+(offset*750)+"px,0px ) translateZ(0px)"});
 				}
 			});
+			/*点击群组*/
+			$(".group_page #myGroup .list_module").unbind("tap").bind("tap",function(){
+				window.location.hash="detailGroup/"+$(this).attr("gid");
+			});
 		}
 		function headDone(){/*头部加载完成*/
 			/*绑定事件*/
