@@ -22,11 +22,11 @@ define("model/message",function(require, exports, module) {
 	var model={};
 	module.exports=model;
 	/*获取聊天记录*/
-		function getList(to,state,fn){
+		function getList(to,fn){
 			var self=user.loginMessage();
 			var result=[];
 			_.each(cache,function(point){
-				if((point.from==self.id&&point.to==to&&point.state==state) || (point.to==self.id&&point.from==to&&point.state==state)){
+				if((point.from==self.id&&point.to==to&&point.state==0) || (point.to==self.id&&point.from==to&&point.state==0)){
 					if(point.from==self.id){
 						point.self=true;
 					}else{
@@ -45,6 +45,41 @@ define("model/message",function(require, exports, module) {
 				fn(false);
 			}
 		};
+	/*获取组聊天记录*/
+		function getGroupList(to,fn){
+			var self=user.loginMessage();
+			var result=[];
+			_.each(cache,function(point){
+				if(point.to==to&&point.state==1){
+					if(point.from==self.id){
+						point.self=true;
+					}else{
+						point.self=false;
+					}
+					result.push(point);
+				}
+			});
+			result=_.sortBy(result,"time");
+			result=_.groupBy(result,function(point){
+				return moment(point.time,"x").format("YYYY-MM-DD");
+			});
+			if(result){
+				fn(result);
+			}else{
+				fn(false);
+			}
+		}
+		/*聊天列表*/
+		function getMessageList(fn){
+			var self=user.loginMessage();
+			var result=_.filter(cache,function(point){
+				return ((point.to==self.id||point.from==self.id)&&point.state==0)||((_.some(self.group.creat,point.to)||_.some(self.group.admin,point.to)||_.some(self.group.member,point.to))&&point.state==1)
+			});
+			result=_.groupBy(result,"to");
+			if(fn){
+				fn(result);
+			}
+		}
 		/*聊天*/
 		function add(to,state,type,main,fn){
 			var self=user.loginMessage();
@@ -53,6 +88,8 @@ define("model/message",function(require, exports, module) {
 					id:newId,
 					time:new Date().getTime(),
 					from:self.id,
+					name:self.name,
+					icon:self.icon,
 					to:to,
 					state:state,
 					type:type,
@@ -61,10 +98,16 @@ define("model/message",function(require, exports, module) {
 				};
 				set(fn);
 		};
-		model.getList=function(to,state,fn){
-			getList(to,state,fn);
+		model.getList=function(to,fn){
+			getList(to,fn);
 		};
+		model.getGroupList=function(to,fn){
+			getGroupList(to,fn);
+		}
 		model.add=function(to,state,type,main,fn){
 				add(to,state,type,main,fn);
+		};
+		model.getMessageList=function(fn){
+			getMessageList(fn);
 		};
 });

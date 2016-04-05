@@ -3,6 +3,7 @@ define("control/messageList",function(require, exports, module) {
 	module.exports=page;
 	page.par=[];
 	var view=require("bin/view");
+	var message=require("model/message");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
@@ -110,6 +111,10 @@ define("control/messageList",function(require, exports, module) {
 		/*使用treeNav_foot作为脚部，传入参数hl=0*/
 		view.foot.show("treeNav_foot",{hl:"0"},footDone);
 		/*转出messageList_page的view*/
+		function getMessageList(returnData){
+			debugger;
+		};
+		message.getMessageList(getMessageList);
 		view.main.sugest("messageList_page",{
 			list:[
 			{"icon":"img/head.jpg","name":"某人","dsc":"描述","time":"某年某月","num":"99"},

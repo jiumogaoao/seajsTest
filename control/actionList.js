@@ -69,8 +69,7 @@ define("control/actionList",function(require, exports, module) {
 					{"icon":"img/game.png","name":"游戏"},
 					{"icon":"img/shopping.png","name":"购物"},
 					{"icon":"img/read.png","name":"阅读"},
-					{"icon":"img/music.png","name":"音乐"},
-					{"icon":"img/hot.png","name":"热门活动"}
+					{"icon":"img/music.png","name":"音乐"}
 					]
 				},
 				{

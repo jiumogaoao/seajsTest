@@ -11,7 +11,9 @@
 								<div class="messagePoint messagePoint<%= (point.self?1:0) %>">
 									<img src="<%= point.icon %>" class="head"/>
 									<div class="textFrame">
-										<div class="name"><%= point.name %></div>
+										<% if(point.state==1){ %>
+											<div class="name"><%= point.name %></div>
+										<% } %>	
 										<% if(point.type=="text"){ %>
 											<div class="word"><%= point.main %></div>
 										<% }else{ %>

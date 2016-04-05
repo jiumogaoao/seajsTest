@@ -36,8 +36,8 @@ define("model/user",function(require, exports, module) {
 			};
 			var result=_.findWhere(cache,{name:name,key:key});
 			if(result){
-				loginMessage=_.pick(result,'id','name','icon','dsc');
-				common.cache("loginMessage",_.pick(result,'id','name','icon','dsc'));
+				loginMessage=_.pick(result,'id','name','icon','dsc','group');
+				common.cache("loginMessage",_.pick(result,'id','name','icon','dsc','group'));
 				if(fn){fn(true);}
 			}else{
 				common.pop.on("账号或密码错误");

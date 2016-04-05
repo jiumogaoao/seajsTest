@@ -32,7 +32,7 @@ define("control/detail",function(require, exports, module) {
 								view.main.sugest("detail_page",{group:newData},data.state,"top",viewDone);
 							}
 							$(that).val("");
-							message.getList(data.par.id,0,newList);
+							message.getList(data.par.id,newList);
 						}
 					});
 				}
@@ -48,7 +48,7 @@ define("control/detail",function(require, exports, module) {
 				showList.group=returnList;
 			};
 		};
-		message.getList(data.par.id,0,getList);
+		message.getList(data.par.id,getList);
 		/*加载主区，传入参数*/
 		view.main.sugest("detail_page",showList,data.state,"top",viewDone);
 	}
