@@ -22,12 +22,11 @@ define("control/addSearch",function(require, exports, module) {
 					window.location.hash="addDetail/"+$(this).attr("pid");
 				}
 			});
+			$(".addSearch_page #back").unbind("tap").bind("tap",function(){
+					control.back();
+				});
 		}
 		function headDone(){/*头部加载完成*/
-			/*绑定事件*/
-			$(".head_module .left").unbind("tap").bind("tap",function(){
-				control.back();
-			});
 		}
 		function footDone(){/*脚部加载完成*/
 

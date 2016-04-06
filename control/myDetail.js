@@ -4,6 +4,7 @@ define("control/myDetail",function(require, exports, module) {
 	page.par=[];
 	var view=require("bin/view");
 	var control=require("bin/control");
+	var user=require("model/user");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
@@ -38,31 +39,18 @@ define("control/myDetail",function(require, exports, module) {
 			 
 		}
 		function footDone(){/*脚部加载完成*/
-
+			$(".myDetail_foot #edit").unbind("tap").bind("tap",function(){
+				window.location.hash="edit";
+			});
 		}
 		/*头部不放那*/
 		view.head.hide(headDone);
 		/*加载脚部，传入参数*/
 		view.foot.show("myDetail_foot",{},footDone);
 		/*加载主区，传入参数*/
+		var userData=user.loginMessage();
 		view.main.sugest("myDetail_page",{
-			bg:"img/myDetailBg.jpg",
-			prise:99,
-			icon:"img/head.jpg",
-			name:"某人",
-			sex:"男",
-			age:33,
-			province:"广东",
-			city:"广州",
-			daren:"img/vipType.png",
-			vipTime:"99天",
-			id:"1233",
-			lian:"img/lian.png",
-			vipType:"img/vipNo.png",
-			step:["sun","sun","moon","moon","star","star"],
-			stepSpeed:"慢速",
-			sign:"个性签名",
-			zoneName:"空间名",
+			base:userData,
 			pic:[{src:"img/head.jpg"},{src:"img/head.jpg"},{src:"img/head.jpg"},{src:"img/head.jpg"}],
 			mine:[
 			{icon:"img/head.jpg",name:"某人",dsc:"描述"},

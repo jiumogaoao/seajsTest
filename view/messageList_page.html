@@ -6,7 +6,7 @@
 		<div id="listFrameRoll">
 			<% if(data.list&&data.list.length){
 				_.each(data.list,function(point){ %>
-						<div class="list_module">
+						<div class="list_module" pid="<%= point.id %>" state="<%= point.state %>">
 							<img class="left" src="<%= point.icon %>"/>
 							<div class="right">
 								<div class="title"><%= point.name %></div>

@@ -34,10 +34,12 @@ define("model/user",function(require, exports, module) {
 				if(fn){fn(false);}
 				return false;
 			};
-			var result=_.findWhere(cache,{name:name,key:key});
+			var result=_.findWhere(cache,function(point){
+				return (point.name==name&&point.key==key)||(point.phone==phone&&point.key==key)
+			});
 			if(result){
-				loginMessage=_.pick(result,'id','name','icon','dsc','group');
-				common.cache("loginMessage",_.pick(result,'id','name','icon','dsc','group'));
+				loginMessage=_.omit(result,'key');
+				common.cache("loginMessage",_.omit(result,'key'));
 				if(fn){fn(true);}
 			}else{
 				common.pop.on("账号或密码错误");
@@ -59,13 +61,15 @@ define("model/user",function(require, exports, module) {
 				cache[newId]={
 					id:newId,
 					name:name,
+					phone:name,
 					key:key,
 					step:["star"],
 					stepDay:0,
 					icon:"",
+					background:"",
 					dsc:"",
+					mood:"",
 					sex:0,
-					age:0,
 					province:"",
 					city:"",
 					birthday:0,
@@ -400,7 +404,7 @@ define("model/user",function(require, exports, module) {
 			};
 			var returnList=[];
 			var searchList=_.reject(cache, function(point){
-			 return _.contains(point.friend.checked,{id:loginMessage.id})||point.id==loginMessage.id; 
+			 return _.some(point.friend.checked,{id:loginMessage.id})||point.id==loginMessage.id; 
 			});
 			_.each(searchList,function(point){
 				returnList.push(_.pick(point,'id','name','icon','dsc'));
@@ -442,6 +446,13 @@ define("model/user",function(require, exports, module) {
 				returnObj.reject.push(addObj);
 			});
 			fn(returnObj);
+		}
+		function editDetail(editData,fn){
+			editData=_.pick(editData,"name","sex","birthday","job","company","school","province","city","hometown","email","dsc");
+			cache[loginMessage.id]=_.extend(cache[loginMessage.id],editData);
+			loginMessage=_.omit(cache[loginMessage.id],"key");
+			common.cache("loginMessage",_.omit(cache[loginMessage.id],'key'));
+			set(fn);
 		}
 		module.exports.loginMessage=function(){
 			return loginMessage;
@@ -509,4 +520,7 @@ define("model/user",function(require, exports, module) {
 		module.exports.getFriendList=function(fn){
 			getFriendList(fn);
 		};
+		module.exports.editDetail=function(editData,fn){
+			editDetail(editData,fn);
+		}
 });

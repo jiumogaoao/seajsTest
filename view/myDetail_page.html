@@ -15,23 +15,23 @@
 	</div>
 	<div id="myDetailMain">
 		<div id="myDetailRoll">
-			<img src="<%= data.bg %>" id="bg"/>
+			<img src="<%= data.base.background %>" id="bg"/>
 			<img id="play" src="img/play.png"/>
 			<div id="priseFrame">
 				<img src="img/prise.png"/>
-				<div id="priseNum"><%= data.prise %></div>
+				<div id="priseNum"><%= data.base.prise %></div>
 				<div class="clear"></div>
 			</div>
 			<div class="frame" id="base">
 				<div class="left">
-					<img src="<%= data.icon %>"/>
+					<img src="<%= data.base.icon %>"/>
 				</div>
 				<div class="right">
-					<div class="name"><%= data.name %></div>
-					<div class="dsc"><%= data.sex %> <%= data.age %>岁 <%= data.province %> <%= data.city %></div>
+					<div class="name"><%= data.base.name %></div>
+					<div class="dsc"><%= data.base.sex %> <%= data.base.age %>岁 <%= data.base.province %> <%= data.base.city %></div>
 					<div class="vipFrame">
-						<img src="<%= data.daren %>"/>
-						<div class="vipNum"><%= data.vipTime %></div>
+						<img src="<%= data.base.daren %>"/>
+						<div class="vipNum"><%= data.base.vipTime %></div>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -42,14 +42,14 @@
 					账号信息
 				</div>
 				<div class="right">
-					<div class="name"><%= data.id %></div>
-					<img src="<%= data.lian %>" class="lian"/>
-					<img src="<%= data.vipType %>" class="vip"/>
+					<div class="name"><%= data.base.id %></div>
+					<img src="<%= data.base.lian %>" class="lian"/>
+					<img src="<%= data.base.vipType %>" class="vip"/>
 					<div class="clear"></div>
-					<% _.each(data.step,function(step){ %>
+					<% _.each(data.base.step,function(step){ %>
 						<div class="step <%= step %>"></div>
 					<% }) %>
-					<div class="speed"><%= data.stepSpeed %></div>
+					<div class="speed"><%= data.base.stepSpeed %></div>
 					<div class="clear"></div>
 					<img class="tag" src="img/tag.png"/>
 				</div>
@@ -58,7 +58,7 @@
 			<div class="frame" id="sign">
 				<div class="left">个性签名</div>
 				<div class="right">
-					<div class="dsc"><%= data.sign %></div>
+					<div class="dsc"><%= data.base.mood %></div>
 					<img class="tag" src="img/tag.png"/>
 				</div>
 				<div class="clear"></div>
@@ -79,7 +79,7 @@
 			<div class="frame" id="zone">
 				<div class="left">QQ空间</div>
 				<div class="right">
-					<div class="dsc"><%= data.zoneName %></div>
+					<div class="dsc"><%= data.base.zoneName %></div>
 					<div class="clear"></div>
 					<img class="tag" src="img/tag.png"/>
 				</div>

@@ -72,10 +72,29 @@ define("model/message",function(require, exports, module) {
 		/*聊天列表*/
 		function getMessageList(fn){
 			var self=user.loginMessage();
-			var result=_.filter(cache,function(point){
-				return ((point.to==self.id||point.from==self.id)&&point.state==0)||((_.some(self.group.creat,point.to)||_.some(self.group.admin,point.to)||_.some(self.group.member,point.to))&&point.state==1)
+			var result={};
+			_.each(cache,function(point){
+				if(((point.to==self.id||point.from==self.id)&&point.state==0)||((_.some(self.group.creat,point.to)||_.some(self.group.admin,point.to)||_.some(self.group.member,point.to))&&point.state==1)){
+					if(point.state==0){
+						if(point.to==self.id){
+							if(!result[point.from]){
+								result[point.from]=[];
+							}
+							result[point.from].push(point);
+						}else{
+							if(!result[point.to]){
+								result[point.to]=[];
+							}
+							result[point.to].push(point);
+						}
+					}else{
+						if(!result[point.to]){
+								result[point.to]=[];
+							}
+							result[point.to].push(point);
+					}
+				}
 			});
-			result=_.groupBy(result,"to");
 			if(fn){
 				fn(result);
 			}
