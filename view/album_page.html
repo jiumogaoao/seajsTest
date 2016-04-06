@@ -5,7 +5,7 @@
 			<div class="album_point" id="new"></div>
 			<% if(data.list&&data.list.length){
 				_.each(data.list,function(album){ %>
-				<div class="album_point">
+				<div class="album_point album" pid="<%= album.id %>">
 					<img src="<%= album.icon %>"/>
 					<div class="clear"></div>
 					<div class="title"><%= album.name %></div>

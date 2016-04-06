@@ -65,8 +65,8 @@ define("model/user",function(require, exports, module) {
 					key:key,
 					step:["star"],
 					stepDay:0,
-					icon:"",
-					background:"",
+					icon:"img/head.jpg",
+					background:"img/myDetailBg.jpg",
 					dsc:"",
 					mood:"",
 					sex:0,
@@ -367,7 +367,7 @@ define("model/user",function(require, exports, module) {
 			});
 		};
 		/*创建相册*/
-		function creatAlbum(aid,name,dsc,fn,end){
+		function creatAlbum(aid,name,dsc,type,fn,end){
 			if(!inited){
 				common.pop.on("数据未同步成功，请稍后再试");
 				return false;
@@ -377,7 +377,7 @@ define("model/user",function(require, exports, module) {
 				if(end){
 					if(fn){fn(true);}
 				}else{
-					album.creat(aid,name,dsc,fn,true);
+					album.creat(aid,name,dsc,type,fn,true);
 				}
 			});
 		};
@@ -454,6 +454,18 @@ define("model/user",function(require, exports, module) {
 			common.cache("loginMessage",_.omit(cache[loginMessage.id],'key'));
 			set(fn);
 		}
+		function changeBackground(src,fn){
+			cache[loginMessage.id].background=src;
+			loginMessage.background=src;
+			common.cache("loginMessage",_.omit(cache[loginMessage.id],'key'));
+			set(fn);
+		}
+		function changeIcon(src,fn){
+			cache[loginMessage.id].icon=src;
+			loginMessage.icon=src;
+			common.cache("loginMessage",_.omit(cache[loginMessage.id],'key'));
+			set(fn);
+		}
 		module.exports.loginMessage=function(){
 			return loginMessage;
 		}
@@ -511,6 +523,9 @@ define("model/user",function(require, exports, module) {
 		module.exports.cancelAdminGroup=function(gid,uid,fn,end){
 			cancelAdminGroup(gid,uid,fn,end);
 		};
+		module.exports.creatAlbum=function(aid,name,dsc,type,fn,end){
+			creatAlbum(aid,name,dsc,type,fn,end);
+		}
 		module.exports.removeAlbum=function(aid,fn,end){
 			removeAlbum(aid,fn,end);
 		};
@@ -522,5 +537,11 @@ define("model/user",function(require, exports, module) {
 		};
 		module.exports.editDetail=function(editData,fn){
 			editDetail(editData,fn);
+		};
+		module.exports.changeBackground=function(src,fn){
+			changeBackground(src,fn);
+		}
+		module.exports.changeIcon=function(src,fn){
+			changeIcon(src,fn);
 		}
 });

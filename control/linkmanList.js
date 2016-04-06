@@ -73,7 +73,8 @@ define("control/linkmanList",function(require, exports, module) {
 			});
 		}
 		/*使用iconTitleButton_head的view作为头部，传入参数*/
-		view.head.show("head_template",{"left":{"type":"icon","src":"img/head.jpg"},"center":{type:"title",text:"联系人"},"right":{type:"button",text:"添加"}},headDone);
+		var userData=user.loginMessage();
+		view.head.show("head_template",{"left":{"type":"icon","src":userData.icon},"center":{type:"title",text:"联系人"},"right":{type:"button",text:"添加"}},headDone);
 		/*使用treeNav_foot作为脚部，传入参数*/
 		view.foot.show("treeNav_foot",{hl:"1"},footDone);
 		/*转出linkmanList_page的view*/

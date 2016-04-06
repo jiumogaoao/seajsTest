@@ -16,6 +16,7 @@
 	<div id="myDetailMain">
 		<div id="myDetailRoll">
 			<img src="<%= data.base.background %>" id="bg"/>
+			<input id="bgInput" type="file"/>
 			<img id="play" src="img/play.png"/>
 			<div id="priseFrame">
 				<img src="img/prise.png"/>
@@ -25,10 +26,11 @@
 			<div class="frame" id="base">
 				<div class="left">
 					<img src="<%= data.base.icon %>"/>
+					<input id="iconInput" type="file"/>
 				</div>
 				<div class="right">
 					<div class="name"><%= data.base.name %></div>
-					<div class="dsc"><%= data.base.sex %> <%= data.base.age %>岁 <%= data.base.province %> <%= data.base.city %></div>
+					<div class="dsc"><%= (data.base.sex?"男":"女") %> <%= data.base.age %>岁 <%= data.base.province %> <%= data.base.city %></div>
 					<div class="vipFrame">
 						<img src="<%= data.base.daren %>"/>
 						<div class="vipNum"><%= data.base.vipTime %></div>

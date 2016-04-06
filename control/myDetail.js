@@ -4,6 +4,7 @@ define("control/myDetail",function(require, exports, module) {
 	page.par=[];
 	var view=require("bin/view");
 	var control=require("bin/control");
+	var common=require("bin/common");
 	var user=require("model/user");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
@@ -33,6 +34,26 @@ define("control/myDetail",function(require, exports, module) {
 					$(".head_module").css("background-color","rgba(18,183,245,"+color+")");
 					$(".head_module .title").css("opacity",color);
 				}
+			});
+			/*修改背景*/
+			$(".myDetail_page #bgInput").unbind("change").bind("change",function(e){
+				common.pic(e,function(returnUrl){
+					user.changeBackground(returnUrl,function(returnData){
+						if(returnData){
+							$(".myDetail_page #bg").attr("src",returnUrl);
+						}
+					});
+				});
+			});
+			/*修改头像*/
+			$(".myDetail_page #base .left #iconInput").unbind("change").bind("change",function(e){
+				common.pic(e,function(returnUrl){
+					user.changeIcon(returnUrl,function(returnData){
+						if(returnData){
+					$(".myDetail_page #base .left img").attr("src",returnUrl);
+				}
+			});
+				});
 			});
 		}
 		function headDone(){/*头部加载完成*/

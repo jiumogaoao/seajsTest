@@ -4,6 +4,7 @@ define("control/phone",function(require, exports, module) {
 	page.par=[];
 	var view=require("bin/view");
 	var control=require("bin/control");
+	var user=require("model/user");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
@@ -58,10 +59,11 @@ define("control/phone",function(require, exports, module) {
 			});
 		}
 		/*加载头部，传入参数*/
+		var userData=user.loginMessage();
 		view.head.show("head_template",{
 			"left":{
 				type:"icon",
-				src:"img/head.jpg"
+				src:userData.icon
 			},
 			"center":{
 				type:"nav",

@@ -90,10 +90,11 @@ define("control/messageList",function(require, exports, module) {
 			});
 		}
 		/*使用iconNavButton_head的view作为头部，传入参数hl=0*/
+		var userData=user.loginMessage();
 		view.head.show("head_template",{
 				"left":{
 					"type":"icon",
-					"src":"img/head.jpg"
+					"src":userData.icon
 				},
 				"center":{
 					"type":"nav",

@@ -22,35 +22,3 @@
 	top:0px;
 	left: 0px;
 }
-.edit_page .group{
-	width: 100%;
-	background-color: #fff;
-	border-top:1px solid #dedfe0;
-	margin-top: 40px;
-}
-.edit_page .point{
-	border-bottom: 1px solid #dedfe0;
-	width: 100%;
-	height: 87px;
-	line-height: 86px;
-	font-size: 30px;
-	position: relative;
-	text-indent: 35px;
-}
-.edit_page .point .left{
-	float: left;
-	width: 162px;
-}
-.edit_page .point .right{
-	float: left;
-}
-.edit_page .point .tag{
-	position: absolute;
-	top:29px;
-	right: 35px;
-}
-.edit_page .point .right input,.edit_page .point .right select{
-	font-size: 30px;
-	height: 85px;
-	line-height: 86px;
-}

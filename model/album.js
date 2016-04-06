@@ -19,32 +19,33 @@ define("model/album",function(require, exports, module) {
 		};
 	}
 	get();
-	var model={};
-	module.exports=model;
-	function creat(aid,name,dsc,fn,end){
+	function creat(aid,name,dsc,type,fn,end){
 			var self=user.loginMessage();
 			if(!aid&&!end){
 				aid=common.uuid();
 			};
 			cache[aid]={
+				id:aid,
 				name:name,
+				icon:"",
 				dsc:dsc,
 				user:self.id,
+				type:type,
 				time:new Date().getTime(),
 				list:[]
 			};
-			set(module,function(){
+			set(function(){
 				if(end){
 					if(fn){fn(true);}
 				}else{
-					user.creatAlbum(aid,name,dsc,fn,true);	
+					user.creatAlbum(aid,name,dsc,type,fn,true);	
 				}
 			});
 		};
 		/*删除相册*/
 		function remove(aid,fn,end){
 			delete cache[aid];
-			set(module,function(){
+			set(function(){
 				if(end){
 					if(fn){fn(true);}
 				}else{
@@ -66,16 +67,32 @@ define("model/album",function(require, exports, module) {
 			cache[aid].list=_.reject(cache[aid].list,{id:pid});
 			set(fn);
 		};
-		model.creat=function(aid,name,dsc,fn,end){
-			creat(aid,name,dsc,fn,end);
+		/*获取相册列表*/
+		function getAlbumList(uid,fn){
+			var self=user.loginMessage();
+			if(!uid){
+				uid=self.id;
+			}
+			var showList=_.filter(cache,function(point){
+				return point.user==uid
+			});
+			if(fn){
+				fn(showList);
+			}
+		}
+		module.exports.creat=function(aid,name,dsc,type,fn,end){
+			creat(aid,name,dsc,type,fn,end);
 		};
-		model.remove=function(aid,fn,end){
+		module.exports.remove=function(aid,fn,end){
 			remove(aid,fn,end);
 		};
-		model.addPic=function(aid,src,name,fn){
+		module.exports.addPic=function(aid,src,name,fn){
 			addPic(aid,src,name,fn);
 		}
-		model.removePic=function(pid,aid,fn){
+		module.exports.removePic=function(pid,aid,fn){
 			removePic(pid,aid,fn);
+		}
+		module.exports.getAlbumList=function(uid,fn){
+			getAlbumList(uid,fn);
 		}
 });
