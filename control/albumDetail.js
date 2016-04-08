@@ -50,6 +50,7 @@ define("control/albumDetail",function(require, exports, module) {
 		view.foot.hide(footDone);
 		/*加载主区，传入参数*/
 		var showList={};
+
 		function getAlbumList(returnData){
 			showList=_.find(returnData,{id:data.par.id});
 			if(!showList.icon&&showList.list.length){
@@ -59,7 +60,7 @@ define("control/albumDetail",function(require, exports, module) {
 				return moment(point.time,"x").format("YYYY 年 MM 月 DD 日");
 			});
 		}
-		album.getAlbumList(null,getAlbumList);
+		album.getAlbum(data.par.id,getAlbum);
 		view.main.sugest("albumDetail_page",showList,data.state,"side",viewDone);
 	}
 });

@@ -81,6 +81,7 @@ define("model/album",function(require, exports, module) {
 				fn(showList);
 			}
 		}
+
 		/*设置封面*/
 		function setIcon(aid,url,fn){
 			cache[aid].icon=url;
