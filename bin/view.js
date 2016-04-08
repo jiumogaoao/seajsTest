@@ -123,7 +123,7 @@ define("bin/view",function(require, exports, module) {
 	view.headPop={
 		show:function(data){
 			var pop=_.template('<% _.each(data.list,function(point){ %>'+
-			'<div class="headBottomPoint headBottomPoint<%= (data.list.length==3)?3:4 %>">'+
+			'<div class="headBottomPoint headBottomPoint<%= (data.list.length==3)?3:4 %>" id="<%= point.id %>">'+
 				'<div class="headBottomIcon <%= point.icon %>"></div>'+
 				'<div class="headBottomText"><%= point.text %></div>'+
 			'</div>'+

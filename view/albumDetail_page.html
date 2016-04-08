@@ -7,7 +7,7 @@
 			<div class="clear"></div>
 		</div>
 		<div class="center">
-			<div class="title">相册名</div>
+			<div class="title"><%= data.name %></div>
 		</div>
 		<div class="right">
 			<div class="rightButton">...</div>
@@ -15,8 +15,9 @@
 	</div>
 	<div id="albumDetailMain">
 		<div id="albumDetailRoll">
-			<div class="albumTop" style="background-image:url(img/head.jpg)">
-				<div class="name">相册名</div>
+			<div class="albumTop" style="background-image:url(<%= data.icon %>)">
+				<div class="mask"></div>
+				<div class="name"><%= data.name %></div>
 				<div class="topBottom">
 					<div class="point">
 						<img class="icon" src="img/prise.png"/>
@@ -31,68 +32,25 @@
 					<div class="clear"></div>
 				</div>
 			</div>
-			<div class="button_module buttonL_module buttonBlue_module" id="Send">上传照片</div>
+			<div class="button_module buttonL_module buttonBlue_module" id="Send">上传照片
+			<input id="addPic" type="file"/>
+			</div>
 			<div class="picList_module">
-				<div class="group">
-					<div class="title">某年某月某日</div>
-					<div class="list">
-						<div class="point">
-							<img src="img/head.jpg"/>
+				<% if(data.showList){
+					_.each(data.showList,function(group,time){ %>
+						<div class="group">
+							<div class="title"><%= time %></div>
+							<div class="list">
+								<% _.each(group,function(point){ %>
+									<div class="point" pid="<%= point.id %>">
+										<img src="<%= point.src %>"/>
+									</div>
+								<% }) %>
+								<div class="clear"></div>
+							</div>
 						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div class="group">
-					<div class="title">某年某月某日</div>
-					<div class="list">
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="point">
-							<img src="img/head.jpg"/>
-						</div>
-						<div class="clear"></div>
-					</div>
-				</div>
+				<%	})
+				} %>
 			</div>
 		</div>
 	</div>

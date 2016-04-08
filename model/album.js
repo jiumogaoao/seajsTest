@@ -15,7 +15,7 @@ define("model/album",function(require, exports, module) {
 		/*把数据推送到数据源*/
 		common.cache(module.id,cache);
 		if(callback){
-			callback();
+			callback(true);
 		};
 	}
 	get();
@@ -54,11 +54,12 @@ define("model/album",function(require, exports, module) {
 			});
 		};
 		/*添加图片*/
-		function addPic(aid,src,name,fn){
+		function addPic(aid,src,fn){
 			cache[aid].list.push({
 				id:common.uuid(),
 				src:src,
-				name:name
+				time:new Date().getTime(),
+				name:""
 			});
 			set(fn);
 		};
@@ -80,19 +81,27 @@ define("model/album",function(require, exports, module) {
 				fn(showList);
 			}
 		}
+		/*设置封面*/
+		function setIcon(aid,url,fn){
+			cache[aid].icon=url;
+			set(fn);
+		};
 		module.exports.creat=function(aid,name,dsc,type,fn,end){
 			creat(aid,name,dsc,type,fn,end);
 		};
 		module.exports.remove=function(aid,fn,end){
 			remove(aid,fn,end);
 		};
-		module.exports.addPic=function(aid,src,name,fn){
-			addPic(aid,src,name,fn);
+		module.exports.addPic=function(aid,src,fn){
+			addPic(aid,src,fn);
 		}
 		module.exports.removePic=function(pid,aid,fn){
 			removePic(pid,aid,fn);
 		}
 		module.exports.getAlbumList=function(uid,fn){
 			getAlbumList(uid,fn);
+		}
+		module.exports.setIcon=function(aid,url,fn){
+			setIcon(aid,url,fn);
 		}
 });

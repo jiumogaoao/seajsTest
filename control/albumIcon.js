@@ -1,4 +1,4 @@
-define("control/albumDetail",function(require, exports, module) {
+define("control/albumIcon",function(require, exports, module) {
 	var page={};
 	module.exports=page;
 	page.par=["id"];
@@ -14,25 +14,12 @@ define("control/albumDetail",function(require, exports, module) {
 			$('img').on("load",function(){
 				myScroll.refresh();
 			});
-			function addPic(returnData){
-				if(returnData){
-					function getAlbumList(returnData){
-						showList=_.find(returnData,{id:data.par.id});
-						showList.showList=_.groupBy(showList.list,function(point){
-							return moment(point.time,"x").format("YYYY 年 MM 月 DD 日");
-						});
+			$(".picList_module .list .point img").unbind("tap").bind("tap",function(){
+				album.setIcon(data.par.id,$(this).attr("src"),function(returnData){
+					if(returnData){
+						control.back();
 					}
-					album.getAlbumList(null,getAlbumList);
-					view.main.sugest("albumDetail_page",showList,data.state,"side",viewDone);
-				}
-			}
-			$(".albumDetail_page #addPic").unbind("change").bind("change",function(e){
-				common.pic(e,function(returnData){
-					album.addPic(data.par.id,returnData,addPic)
 				});
-			});
-			$(".albumDetail_page .mask").unbind("tap").bind("tap",function(){
-				window.location.hash="albumIcon/"+data.par.id
 			});
 		}
 		function headDone(){/*头部加载完成*/
@@ -45,7 +32,7 @@ define("control/albumDetail",function(require, exports, module) {
 
 		}
 		/*加载头部，传入参数*/
-		view.head.hide(headDone);
+		view.head.show("head_template",{"left":{type:"back",text:"返回"},"center":{type:"title","text":"编辑封面"}},headDone);
 		/*隐藏脚部*/
 		view.foot.hide(footDone);
 		/*加载主区，传入参数*/
@@ -60,6 +47,6 @@ define("control/albumDetail",function(require, exports, module) {
 			});
 		}
 		album.getAlbumList(null,getAlbumList);
-		view.main.sugest("albumDetail_page",showList,data.state,"side",viewDone);
+		view.main.sugest("albumIcon_page",showList,data.state,"side",viewDone);
 	}
 });

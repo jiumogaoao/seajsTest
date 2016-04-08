@@ -3,6 +3,7 @@ define("bin/control",function(require, exports, module) {
     /*C层*/
     var common=require("bin/common");
     var config=require("bin/config");
+    var view=require("bin/view");
     var control={};
     module.exports=control;
     /*用于换存C层object*/
@@ -39,6 +40,8 @@ define("bin/control",function(require, exports, module) {
             /*关掉loaging*/
             common.loading.off();
             common.pop.off();
+            view.headPop.hide();
+            view.footPop.hide();
             /*初始给control的数据*/
             var dataObj = {
                 /*跳转状态*/

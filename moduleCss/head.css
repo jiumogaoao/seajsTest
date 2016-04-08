@@ -107,7 +107,10 @@
 	bottom:12px;
 }
 .head_module .rightIcon.add{
-	background-position: 0px -405px;
+	background-position: 0px -406px;
+}
+.head_module .rightIcon.addB{
+	background-position: 0px -349px;
 }
 .head_module .rightIcon.people{
 	background-position: 0px -291px;

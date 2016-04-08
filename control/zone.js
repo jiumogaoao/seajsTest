@@ -30,6 +30,17 @@ define("control/zone",function(require, exports, module) {
 			$(".head_module .left").unbind("tap").bind("tap",function(){
 				control.back();
 			});
+			$(".head_module .right").unbind("tap").bind("tap",function(){
+				view.headPop.show({list:[
+					{id:"say",icon:"say",text:"说说"},
+					{id:"picture",icon:"picture",text:"照片"},
+					{id:"sign",icon:"sign",text:"签到"},
+					{id:"video",icon:"video",text:"视频"}
+					]});
+				$("#headPop #say").unbind("tap").bind("tap",function(){
+					window.location.hash="addSay";
+				});
+			});
 			$(".zone_page #album").unbind("tap").bind("tap",function(){
 				window.location.hash="album";
 			});
