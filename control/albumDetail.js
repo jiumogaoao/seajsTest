@@ -29,10 +29,10 @@ define("control/albumDetail",function(require, exports, module) {
 		view.foot.hide(footDone);
 		/*加载主区，传入参数*/
 		var showList={};
-		function getAlbumList(returnData){
+		function getAlbum(returnData){
 			showList=returnData;
 		}
-		album.getAlbumList(null,getAlbumList);
+		album.getAlbum(data.par.id,getAlbum);
 		view.main.sugest("albumDetail_page",showList,data.state,"side",viewDone);
 	}
 });

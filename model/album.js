@@ -80,6 +80,12 @@ define("model/album",function(require, exports, module) {
 				fn(showList);
 			}
 		}
+		/*获取相册详情*/
+		function getAlbum(aid,fn){
+			if(fn){
+				fn(cache[aid]);
+			}
+		}
 		module.exports.creat=function(aid,name,dsc,type,fn,end){
 			creat(aid,name,dsc,type,fn,end);
 		};
@@ -94,5 +100,8 @@ define("model/album",function(require, exports, module) {
 		}
 		module.exports.getAlbumList=function(uid,fn){
 			getAlbumList(uid,fn);
+		}
+		module.exports.getAlbum=function(aid,fn){
+			getAlbum(aid,fn);
 		}
 });
