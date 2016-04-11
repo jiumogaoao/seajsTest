@@ -4,6 +4,8 @@ define("control/addSay",function(require, exports, module) {
 	page.par=[];
 	var view=require("bin/view");
 	var control=require("bin/control");
+	var common=require("bin/common");
+	var zone=require("model/zone");
 	page.fn=function(data){
 		function viewDone(){/*主区加载完成*/
 			/*添加滚动*/
@@ -12,11 +14,32 @@ define("control/addSay",function(require, exports, module) {
 			$('#addSayMain img').on("load",function(){
 				myScroll.refresh();
 			});
+			$(".addSay_page .toggle_module").unbind("tap").bind("tap",function(){
+				$(this).toggleClass("toggleRight");
+			});
+			$(".addSay_page #addPic").unbind("change").bind("change",function(e){
+				common.pic(e,function(url){
+					$(".addSay_page #addPic").val("");
+					$(".addSay_page .topFrame .picFrame .addPic").before('<img class="point" src="'+url+'">');
+				});
+			});
 		}
 		function headDone(){/*头部加载完成*/
 			/*绑定事件*/
 			$(".head_module .left").unbind("tap").bind("tap",function(){
 				control.back();
+			});
+			$(".head_module .right").unbind("tap").bind("tap",function(){
+				var picArry=[];
+				$(".addSay_page .topFrame .picFrame .point").each(function(){
+					picArry.push({id:common.uuid(),src:$(this).attr("src")});
+				});
+				function add(returnData){
+					if(returnData){
+						control.back();
+					};
+				};
+				zone.add($(".addSay_page .topFrame textarea").val(),picArry,add);
 			});
 		}
 		function footDone(){/*脚部加载完成*/

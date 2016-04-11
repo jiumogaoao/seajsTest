@@ -34,12 +34,13 @@ define("model/user",function(require, exports, module) {
 				if(fn){fn(false);}
 				return false;
 			};
-			var result=_.findWhere(cache,function(point){
-				return (point.name==name&&point.key==key)||(point.phone==phone&&point.key==key)
+			var result=_.find(cache,function(point){
+				return (point.name==name&&point.key==key)||(point.phone==name&&point.key==key)
 			});
 			if(result){
 				loginMessage=_.omit(result,'key');
 				common.cache("loginMessage",_.omit(result,'key'));
+
 				if(fn){fn(true);}
 			}else{
 				common.pop.on("账号或密码错误");
@@ -67,6 +68,7 @@ define("model/user",function(require, exports, module) {
 					stepDay:0,
 					icon:"img/head.jpg",
 					background:"img/myDetailBg.jpg",
+					zoneBackground:"img/zoneBg.jpg",
 					dsc:"",
 					mood:"",
 					sex:0,
@@ -112,6 +114,7 @@ define("model/user",function(require, exports, module) {
 					praise:[],
 					attention:[],
 					readed:[],
+					totalReaded:[],
 					share:[],
 					reply:[],
 					friend:{

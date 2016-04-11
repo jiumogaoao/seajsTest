@@ -3,6 +3,7 @@ define("model/zone",function(require, exports, module) {
 	var inited=false;
 	var common=require("bin/common");
     var user=require("model/user");
+    var zone=require("model/zone");
 	var get=function(){
 		if(!inited){
 			if(common.cache(module.id)){
@@ -15,15 +16,20 @@ define("model/zone",function(require, exports, module) {
 		/*把数据推送到数据源*/
 		common.cache(module.id,cache);
 		if(callback){
-			callback();
+			callback(true);
 		};
 	}
 	get();
 	var model={};
 	module.exports=model;
 	/*获取聊天记录*/
-		function getList(id,fn){
-			var result=_.where(cache,{user:id});
+		function getList(fn){
+			var self=user.loginMessage();
+			var result=_.filter(cache,function(point){
+				return (point.user==self.id||_.some(self.friend.checked,function(friendPoind){
+					return friendPoind.id==point.user
+				}))
+			});
 			if(result&&result.length){
 				fn(result);
 			}else{
@@ -108,13 +114,15 @@ define("model/zone",function(require, exports, module) {
 			});
 		};
 		/*发帖*/
-		function add(id,title,text,pic,fn){
-			var newId=app.uuid();
+		function add(text,pic,fn){
+			var self=user.loginMessage();
+			var newId=common.uuid();
 				cache[newId]={
 					id:newId,
 					time:new Date().getTime(),
-					user:id,
-					title:title,
+					icon:self.icon,
+					name:self.name,
+					user:self.id,
 					text:text,
 					pic:pic,
 					praise:[],
@@ -125,8 +133,8 @@ define("model/zone",function(require, exports, module) {
 				};
 				set(fn);
 		};
-		model.getList=function(id,fn){
-			getList(id,fn);
+		model.getList=function(fn){
+			getList(fn);
 		};
 		model.praise=function(zid,id,fn,end){
 			praise(zid,id,fn,end);
@@ -149,7 +157,7 @@ define("model/zone",function(require, exports, module) {
 		model.reply=function(zid,id,to,text,fn,end){
 			reply(zid,id,to,text,fn,end);
 		};
-		model.add=function(id,title,text,pic,fn){
-				add(id,title,text,pic,fn);
+		model.add=function(text,pic,fn){
+				add(text,pic,fn);
 		};
 });
